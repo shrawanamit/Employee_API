@@ -1,17 +1,12 @@
 ﻿///-----------------------------------------------------------------
-///   class:       EmployeeRL
-///   Description: Repository Layer class for employee
+///   class:       EmployeeModel
+///   Description: comman Layer class for user
 ///   Author:      amit                   Date: 30/6/2020
 ///-----------------------------------------------------------------
 
-using LanguageExt;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
 namespace EMSampleCommanLayer.Models
 {
+    using System.ComponentModel.DataAnnotations;
     public class EmployeeModel
     {
         /// <summary>
@@ -46,7 +41,8 @@ namespace EMSampleCommanLayer.Models
         /// <value>
         /// Mobile NO
         /// </value>
-        [Required]
+        [Required (ErrorMessage = "Mobile number required")]
+        //[RegularExpression("([1-9]{1}[0-9]{9})$", ErrorMessage = "Phone number is not valid")]
         public string MobNo { get; set; }
 
         /// <summary>
@@ -55,17 +51,10 @@ namespace EMSampleCommanLayer.Models
         /// <value>
         /// email
         /// </value>
-        [Required]
+        [Required(ErrorMessage = "emailID required")]
+        //[RegularExpression("^[0-9a-zA-Z]+([._+-][0-9a-zA-Z]+)*@[0-9a-zA-Z]+.[a-zA-Z]{2,4}([.][a-zA-Z]{2,3})?$", ErrorMessage = "EmailId is not valid")]
         public string Email { get; set; }
 
-        /// <summary>
-        /// Gets or sets the gender.
-        /// </summary>
-        /// <value>
-        /// password
-        /// </value>
-        [Required]
-        public string Password { get; set; }
 
         /// <summary>
         /// Gets or sets the Address.

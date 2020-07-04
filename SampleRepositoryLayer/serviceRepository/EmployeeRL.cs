@@ -1,6 +1,6 @@
 ﻿///-----------------------------------------------------------------
 ///   class:       EmployeeRL
-///   Description: Repository Layer class for employee
+///   Description: Repository Layer class for employee and ado .net code connection with data base
 ///   Author:      amit                   Date: 30/6/2020
 ///-----------------------------------------------------------------
 
@@ -9,10 +9,12 @@ namespace EMSampleRepositoryLayer.serviceRepository
     using EMSampleCommanLayer;
     using EMSampleCommanLayer.Models;
     using EMSampleRepositoryLayer.interfaceRepository;
+    using Microsoft.Extensions.Configuration;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
+    using System.IO;
 
     /// <summary>
     /// ado .net class repositry layer
@@ -22,7 +24,13 @@ namespace EMSampleRepositoryLayer.serviceRepository
         /// <summary>
         /// data base connection veriable
         /// </summary>
-        private static readonly string ConnectionVariable = "Data Source=DESKTOP-LSKIBA4;Initial Catalog=EmployeeDB;Integrated Security=True";
+         private SqlConnection sqlConnection;
+
+        public EmployeeRL()
+        {
+            var configuration = this.GetConfiguration();
+            this.sqlConnection = new SqlConnection(configuration.GetSection("Data").GetSection("ConnectionString").Value);
+        }
 
         /// <summary>
         /// list of employee deyail
@@ -30,8 +38,6 @@ namespace EMSampleRepositoryLayer.serviceRepository
         /// <returns>List ofemployee</returns>
         public List<EmployeeModel> GetAllEmployee()
         {
-            ///sql connection veriable
-            SqlConnection sqlConnection = new SqlConnection(ConnectionVariable);
             try
             {
                 /// declaration list of type Employee Model
@@ -47,11 +53,11 @@ namespace EMSampleRepositoryLayer.serviceRepository
                 {
                     /// instace of employee model
                     EmployeeModel employeeModel = new EmployeeModel();
+                    employeeModel.EmployeeId = Convert.ToInt32(sqlDataReader["EmployeeId"]);
                     employeeModel.FirstName = sqlDataReader["FirstName"].ToString();
                     employeeModel.LastName = sqlDataReader["LastName"].ToString();
                     employeeModel.MobNo = sqlDataReader["MobNo"].ToString();
                     employeeModel.Email = sqlDataReader["Email"].ToString();
-                    employeeModel.Password = sqlDataReader["Password"].ToString();
                     employeeModel.Address = sqlDataReader["Address"].ToString();
                     employeeModel.Department = sqlDataReader["Department"].ToString();
                     employeeModel.Salary = Convert.ToInt32(sqlDataReader["Salary"]);
@@ -73,7 +79,6 @@ namespace EMSampleRepositoryLayer.serviceRepository
         /// <returns>boolean value </returns>
         public bool AddEmployee(EmployeeModel employeeModel)
         {
-            SqlConnection sqlConnection = new SqlConnection(ConnectionVariable);
             try
             {
                 //for store procedure and connection to database
@@ -84,7 +89,6 @@ namespace EMSampleRepositoryLayer.serviceRepository
                 sqlCommand.Parameters.AddWithValue("@LastName", employeeModel.LastName);
                 sqlCommand.Parameters.AddWithValue("@MobNo", employeeModel.MobNo);
                 sqlCommand.Parameters.AddWithValue("@Email", employeeModel.Email);
-                sqlCommand.Parameters.AddWithValue("@Password", employeeModel.Password);
                 sqlCommand.Parameters.AddWithValue("@Address", employeeModel.Address);
                 sqlCommand.Parameters.AddWithValue("@Department", employeeModel.Department);
                 sqlCommand.Parameters.AddWithValue("@Salary", employeeModel.Salary.ToString());
@@ -112,10 +116,8 @@ namespace EMSampleRepositoryLayer.serviceRepository
         /// <param name="EmployeeID">id</param>
         /// <param name="employeeModel">employee model</param>
         /// <returns>status</returns>
-        public int UpdateEmployee(int EmployeeID, EmployeeModel employeeModel)
+        public int UpdateEmployeeByID(int EmployeeID, EmployeeModel employeeModel)
         {
-            SqlConnection sqlConnection = new SqlConnection(ConnectionVariable);
-            
             try
             {
                 SqlCommand sqlCommand = new SqlCommand("spUpdateEmployees", sqlConnection);
@@ -126,7 +128,6 @@ namespace EMSampleRepositoryLayer.serviceRepository
                 sqlCommand.Parameters.AddWithValue("@LastName", employeeModel.LastName);
                 sqlCommand.Parameters.AddWithValue("@MobNo", employeeModel.MobNo);
                 sqlCommand.Parameters.AddWithValue("@Email", employeeModel.Email);
-                sqlCommand.Parameters.AddWithValue("@Password", employeeModel.Password);
                 sqlCommand.Parameters.AddWithValue("@Address", employeeModel.Address);
                 sqlCommand.Parameters.AddWithValue("@Department", employeeModel.Department);
                 sqlCommand.Parameters.AddWithValue("@Salary", employeeModel.Salary.ToString());
@@ -156,9 +157,8 @@ namespace EMSampleRepositoryLayer.serviceRepository
         /// </summary>
         /// <param name="EmployeeID">id of employee</param>
         /// <returns>employee id</returns>
-        public EmployeeID DeleteEmployee(int EmployeeID)
-        {
-            SqlConnection sqlConnection = new SqlConnection(ConnectionVariable);
+        public EmployeeID DeleteEmployeeByID(int EmployeeID)
+        { 
             try
             {
                 ///instace of employeeid model
@@ -187,10 +187,8 @@ namespace EMSampleRepositoryLayer.serviceRepository
         /// </summary>
         /// <param name="EmployeeID">employee id</param>
         /// <returns>id of employee</returns>
-        public EmployeeModel GetSpecificEmployee(int EmployeeID)
+        public EmployeeModel GetEmployeeByID(int EmployeeID)
         {
-            /// connection to database
-            SqlConnection sqlConnection = new SqlConnection(ConnectionVariable);
             try
             {
                 EmployeeModel employee = new EmployeeModel();
@@ -199,12 +197,12 @@ namespace EMSampleRepositoryLayer.serviceRepository
                 sqlConnection.Open();
                 SqlDataReader Response = command.ExecuteReader();
                 while (Response.Read())
-                { 
+                {
+                    employee.EmployeeId = Convert.ToInt32(Response["EmployeeID"]);
                     employee.FirstName = Response["FirstName"].ToString();
                     employee.LastName = Response["LastName"].ToString();
                     employee.MobNo = Response["MobNo"].ToString();
                     employee.Email = Response["Email"].ToString();
-                    employee.Password = Response["Password"].ToString();
                     employee.Address = Response["Department"].ToString();
                     employee.Department = Response["Department"].ToString();
                     employee.Salary = Convert.ToInt32(Response["Salary"]);
@@ -222,45 +220,13 @@ namespace EMSampleRepositoryLayer.serviceRepository
         }
 
         /// <summary>
-        /// login Employee
+        /// configuration with database
         /// </summary>
-        /// <param name="data">data of login type</param>
-        /// <returns>status</returns>
-        public int EmployeeLogin(Login data)
+        /// <returns>return builder</returns>
+        public IConfigurationRoot GetConfiguration()
         {
-            SqlConnection sqlConnection = new SqlConnection(ConnectionVariable);
-            try
-            {
-                SqlCommand sqlCommand = new SqlCommand("spLogin", sqlConnection);
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.Parameters.AddWithValue("@Email", data.Email);
-                sqlCommand.Parameters.AddWithValue("@Password", data.Password);
-                sqlConnection .Open();
-                SqlDataReader reader = sqlCommand.ExecuteReader();
-                int Status = 0;
-                while (reader.Read())
-                {
-                    ///assign the value in status
-                    Status = reader.GetInt32(0);
-                }
-                if (Status == 1)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            finally
-            {
-                ///closing the connection
-                sqlConnection.Close();
-            }
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            return builder.Build();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿///-----------------------------------------------------------------
-///   class:       EmployeeRL
-///   Description: cantrller Layer class for employee
+///   class:       UserController
+///   Description: Controller Layer class for User management
 ///   Author:      amit                   Date: 30/6/2020
 ///-----------------------------------------------------------------
 namespace EmployeeManagement.Controllers
@@ -29,13 +29,13 @@ namespace EmployeeManagement.Controllers
         }
 
         /// <summary>
-        /// 
+        /// insert the employee data
         /// </summary>
-        /// <param name="employeeModel"></param>
-        /// <returns></returns>
+        /// <param name="employeeModel">employee data</param>
+        /// <returns>status</returns>
         [HttpPost]
-        [Route("register")]
-        public ActionResult AddEmployee(UserModel UserModel)
+        [Route("")]
+        public ActionResult AddUser(UserModel UserModel)
         {
 
             try
@@ -47,7 +47,7 @@ namespace EmployeeManagement.Controllers
                 {
                     bool status = true;
                     var Message = "Employees Registration Successfull";
-                    return this.Ok(new { status, Message, response });
+                    return this.Ok(new { status, Message, response = UserModel });
                 }
                 else
                 {
@@ -58,18 +58,19 @@ namespace EmployeeManagement.Controllers
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                bool status = false;
+                return this.BadRequest(new { status, message = e.Message });
             }
         }
 
         /// <summary>
-        /// 
+        /// Login user
         /// </summary>
-        /// <param name="userLogin"></param>
-        /// <returns></returns>
+        /// <param name="userLogin">Login data</param>
+        /// <returns>status</returns>
         [HttpPost]
         [Route("userLogin")]
-        public ActionResult LoginEmployee([FromBody]UserLogin userLogin)
+        public ActionResult LoginUser([FromBody]UserLogin userLogin)
         {
             try
             {
@@ -79,7 +80,7 @@ namespace EmployeeManagement.Controllers
                 {
                     bool status = true;
                     var Message = "Employees login sucessfull";
-                    return this.Ok(new { status, Message, response });
+                    return this.Ok(new { status, Message, response= userLogin });
                 }
                 else
                 {
@@ -90,7 +91,8 @@ namespace EmployeeManagement.Controllers
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                bool status = false;
+                return this.BadRequest(new { status, message = e.Message });
             }
         }
     }

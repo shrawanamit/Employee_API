@@ -1,4 +1,8 @@
-﻿
+﻿///-----------------------------------------------------------------
+///   class:      UserModel
+///   Description: comman Layer class for userData
+///   Author:      amit                   Date: 30/6/2020
+///-----------------------------------------------------------------
 namespace EMSampleCommanLayer.Models
 {
     using System.ComponentModel.DataAnnotations;
@@ -8,9 +12,10 @@ namespace EMSampleCommanLayer.Models
         /// Gets or sets the name.
         /// </summary>
         /// <value>
-        /// first name
+        /// first name//^[A-Z]{1}[a-z]{3}$//^[A-Za-z0-9]*[@#$%^&*][0-9a-zA-Z]*$
         /// </value>
-        [Required]
+        [Required(ErrorMessage = "First name required")]
+       // [RegularExpression("^[A-Z]{1}[a-z]{3}$", ErrorMessage = "FirstName is not valid")]
         public string FirstName { get; set; }
 
         /// <summary>
@@ -19,7 +24,8 @@ namespace EMSampleCommanLayer.Models
         /// <value>
         /// last name
         /// </value>
-        [Required]
+        [Required(ErrorMessage = "lastname required")]
+       // [RegularExpression("^[A-Z]{1}[a-z]{3}$", ErrorMessage = "LastName is not valid")]
         public string LastName { get; set; }
 
         /// <summary>
@@ -28,7 +34,7 @@ namespace EMSampleCommanLayer.Models
         /// <value>
         /// last name
         /// </value>
-        [Required]
+        [Required(ErrorMessage = "user name required")]
         public string UserName { get; set; }
 
         /// <summary>
@@ -37,7 +43,8 @@ namespace EMSampleCommanLayer.Models
         /// <value>
         /// Mobile NO
         /// </value>
-        [Required]
+        [Required(ErrorMessage = "Mobile number required")]
+        //[RegularExpression("([1-9]{1}[0-9]{9})$", ErrorMessage = "Phone number is not valid")]
         public string MobNo { get; set; }
 
         /// <summary>
@@ -46,7 +53,8 @@ namespace EMSampleCommanLayer.Models
         /// <value>
         /// email
         /// </value>
-        [Required]
+        [Required(ErrorMessage = "emailID required")]
+       // [RegularExpression("^[0-9a-zA-Z]+([._+-][0-9a-zA-Z]+)*@[0-9a-zA-Z]+.[a-zA-Z]{2,4}([.][a-zA-Z]{2,3})?$", ErrorMessage = "EmailId is not valid")]
         public string Email { get; set; }
 
         /// <summary>
@@ -55,7 +63,8 @@ namespace EMSampleCommanLayer.Models
         /// <value>
         /// password
         /// </value>
-        [Required]
+        [Required(ErrorMessage ="Password required")]
+        // [RegularExpression("^[A-Za-z0-9]*[@#$%^&*][0-9a-zA-Z]*$", ErrorMessage = "Password is not valid")]
         public string Password { get; set; }
 
         /// <summary>
@@ -64,7 +73,7 @@ namespace EMSampleCommanLayer.Models
         /// <value>
         /// Address
         /// </value>
-        [Required]
+        [Required(ErrorMessage = " Address required")]
         public string Address { get; set; }
 
         /// <summary>
@@ -73,7 +82,7 @@ namespace EMSampleCommanLayer.Models
         /// <value>
         /// Department
         /// </value>
-        [Required]
+        [Required(ErrorMessage = " Department required")]
         public string Department { get; set; }
     }
 }

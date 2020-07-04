@@ -1,4 +1,8 @@
-﻿
+﻿///-----------------------------------------------------------------
+///   interface:      IUserRL
+///   Description: Repositery Layer interface for user
+///   Author:      amit                   Date: 30/6/2020
+///-----------------------------------------------------------------
 namespace EMSampleRepositoryLayer.interfaceRepository
 {
     using EMSampleCommanLayer.Models;

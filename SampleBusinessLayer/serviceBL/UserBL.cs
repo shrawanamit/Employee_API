@@ -1,12 +1,15 @@
-﻿using EMBusinessLayer.IinterfaceBL;
-using EMSampleCommanLayer.Models;
-using EMSampleRepositoryLayer.interfaceRepository;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿///-----------------------------------------------------------------
+///   class:       UserBL
+///   Description: Business Layer class for User
+///   Author:      amit                   Date: 30/6/2020
+///-----------------------------------------------------------------
 
 namespace EMBusinessLayer.serviceBL
 {
+    using EMBusinessLayer.IinterfaceBL;
+    using EMSampleCommanLayer.Models;
+    using EMSampleRepositoryLayer.interfaceRepository;
+    using System;
     public class UserBL:IUserBl
     {
         /// <summary>

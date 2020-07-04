@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMSampleCommanLayer", "Samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMSampleRepositoryLayer", "SampleRepositoryLayer\EMSampleRepositoryLayer.csproj", "{49669A28-3DAA-4EAE-95CC-5272A0DED322}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wepAPITest", "wepAPITest\wepAPITest.csproj", "{AD1C797A-69F3-4B42-99C1-956AB548D07E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeCantrollerAPITest", "wepAPITest\EmployeeCantrollerAPITest.csproj", "{AD1C797A-69F3-4B42-99C1-956AB548D07E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "userControllerApiTest", "userControllerApiTest\userControllerApiTest.csproj", "{F4618C85-AC60-4CBF-BE17-D46B905DAC0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{AD1C797A-69F3-4B42-99C1-956AB548D07E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD1C797A-69F3-4B42-99C1-956AB548D07E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD1C797A-69F3-4B42-99C1-956AB548D07E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4618C85-AC60-4CBF-BE17-D46B905DAC0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4618C85-AC60-4CBF-BE17-D46B905DAC0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4618C85-AC60-4CBF-BE17-D46B905DAC0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4618C85-AC60-4CBF-BE17-D46B905DAC0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

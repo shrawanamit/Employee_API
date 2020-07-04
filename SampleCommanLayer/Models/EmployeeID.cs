@@ -1,13 +1,13 @@
 ﻿///-----------------------------------------------------------------
-///   class:       EmployeeRL
-///   Description: Repository Layer class for employee
+///   class:      EmployeeID
+///   Description: comman Layer class for user Id
 ///   Author:      amit                   Date: 30/6/2020
 ///-----------------------------------------------------------------
 
 namespace EMSampleCommanLayer.Models
 {
     /// <summary>
-    /// class gor id
+    /// class for userid
     /// </summary>
     public class EmployeeID
     {

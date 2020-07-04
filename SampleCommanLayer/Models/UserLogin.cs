@@ -1,4 +1,8 @@
-﻿
+﻿///-----------------------------------------------------------------
+///   class:       UserLogin
+///   Description: comman Layer class for userLogin
+///   Author:      amit                   Date: 30/6/2020
+///-----------------------------------------------------------------
 namespace EMSampleCommanLayer.Models
 {
     using System.ComponentModel.DataAnnotations;
@@ -7,7 +11,7 @@ namespace EMSampleCommanLayer.Models
         /// <summary>
         /// UserName
         /// </summary>
-        [Required(ErrorMessage = "Email Is Required")]
+        [Required(ErrorMessage = "username Is Required")]
         public string UserName { get; set; }
 
         /// <summary>

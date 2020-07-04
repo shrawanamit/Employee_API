@@ -7,7 +7,6 @@
 namespace EMBusinessLayer.serviceBL
 {
     using EMBusinessLayer.IinterfaceBL;
-    using EMSampleCommanLayer;
     using EMSampleCommanLayer.Models;
     using EMSampleRepositoryLayer.interfaceRepository;
     using System;
@@ -92,11 +91,11 @@ namespace EMBusinessLayer.serviceBL
         /// <param name="EmployeeID">id</param>
         /// <param name="employeeModel">employee data</param>
         /// <returns>status</returns>
-        public int UpdateEmployee(int EmployeeID, EmployeeModel employeeModel)
+        public int UpdateEmployeeByID(int EmployeeID, EmployeeModel employeeModel)
         {
             try
             {
-                var result = employeeRL.UpdateEmployee(EmployeeID, employeeModel);
+                var result = employeeRL.UpdateEmployeeByID(EmployeeID, employeeModel);
                 return result;
             }
             catch (Exception e)
@@ -111,11 +110,11 @@ namespace EMBusinessLayer.serviceBL
         /// </summary>
         /// <param name="ID"> get specific Entry</param>
         /// <returns></returns>
-        public EmployeeModel GetSpecificEmployee(int EmployeeID)
+        public EmployeeModel GetEmployeeByID(int EmployeeID)
         {
             try
             {
-                return  employeeRL.GetSpecificEmployee(EmployeeID);
+                return  employeeRL.GetEmployeeByID(EmployeeID);
             }
             catch (Exception e)
             {
@@ -128,7 +127,7 @@ namespace EMBusinessLayer.serviceBL
         /// </summary>
         /// <param name="EmployeeID">id of employee</param>
         /// <returns>employee id</returns>
-        public EmployeeID DeleteEmployee(int employeeID)
+        public EmployeeID DeleteEmployeeByID(int employeeID)
         {
             try
             {
@@ -137,7 +136,7 @@ namespace EMBusinessLayer.serviceBL
                 if (employeeID != 0)
                 {
                     ////this variable stores the response from employee repository of the AddEmployee
-                     response = this.employeeRL.DeleteEmployee(employeeID);
+                     response = this.employeeRL.DeleteEmployeeByID(employeeID);
                     ////check response is true
                     return response;
                 }
@@ -146,31 +145,6 @@ namespace EMBusinessLayer.serviceBL
             catch (Exception exception)
             {
                 throw new Exception(exception.Message);
-            }
-        }
-
-        /// <summary>
-        /// login Employee
-        /// </summary>
-        /// <param name="data">data of login type</param>
-        /// <returns>status</returns>
-        public int LoginEmployee(Login login)
-        {
-            try
-            {
-                var response = this.employeeRL.EmployeeLogin(login);
-                if (!response.Equals(0))
-                {
-                    return 1;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
             }
         }
     }

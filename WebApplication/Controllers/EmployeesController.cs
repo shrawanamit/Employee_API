@@ -1,6 +1,6 @@
 ﻿///-----------------------------------------------------------------
-///   class:       EmployeeRL
-///   Description: Repository Layer class for employee
+///   class:       EmployeesController
+///   Description: EmployeesController class for employee management Api
 ///   Author:      amit                   Date: 30/6/2020
 ///-----------------------------------------------------------------
 
@@ -37,6 +37,7 @@ namespace WebApplication.Controllers
         /// </summary>
         /// <returns>status</returns>
         [HttpGet]
+        [Route("")]
         public ActionResult<IEnumerable<EmployeeModel>> GetAllEmployees()
         {
             try
@@ -58,7 +59,8 @@ namespace WebApplication.Controllers
             }
             catch(Exception e)
             {
-                throw new Exception(e.Message);
+                bool status = false;
+                return this.BadRequest(new { status, message=e.Message});
             }
            
 
@@ -70,7 +72,7 @@ namespace WebApplication.Controllers
         /// <param name="employeeModel">data to insert</param>
         /// <returns>status</returns>
         [HttpPost]
-        [Route("register")]
+        [Route("")]
         public  ActionResult AddEmployee([FromBody] EmployeeModel employeeModel)
         {
 
@@ -93,7 +95,8 @@ namespace WebApplication.Controllers
             }
             catch(Exception e)
             {
-                return this.BadRequest(new { message = e.Message });
+                bool status = false;
+                return this.BadRequest(new { status, message = e.Message });
             }
         }
 
@@ -105,11 +108,11 @@ namespace WebApplication.Controllers
         /// <returns>status</returns>
         [HttpPut]
         [Route("{EmployeeID}")]
-        public ActionResult PutEmployee([FromRoute] int EmployeeID, [FromBody] EmployeeModel employeeModel)
+        public ActionResult UpdateEmployeeByID([FromRoute] int EmployeeID, [FromBody] EmployeeModel employeeModel)
         {
             try 
             {
-                var data = this.employeeBusiness.UpdateEmployee( EmployeeID,  employeeModel);
+                var data = this.employeeBusiness.UpdateEmployeeByID( EmployeeID,  employeeModel);
                 if (!data.Equals(null))
                 {
                     bool status = true;
@@ -125,7 +128,8 @@ namespace WebApplication.Controllers
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                bool status = false;
+                return this.BadRequest(new { status, message = e.Message });
             }
 
 
@@ -138,11 +142,11 @@ namespace WebApplication.Controllers
         /// <returns>status</returns>
         [HttpDelete]
         [Route("{employeeId}")]
-        public ActionResult DeleteEmployee(int employeeId)
+        public ActionResult DeleteEmployeeByID(int employeeId)
         {
             try
             {
-                var data = this.employeeBusiness.DeleteEmployee(employeeId);
+                var data = this.employeeBusiness.DeleteEmployeeByID(employeeId);
                 if (!data.Equals(null))
                 {
                     bool status = true;
@@ -158,7 +162,8 @@ namespace WebApplication.Controllers
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                bool status = false;
+                return this.BadRequest(new { status, message = e.Message });
             }
         }
 
@@ -169,11 +174,11 @@ namespace WebApplication.Controllers
         /// <returns>status</returns>
         [HttpGet]
         [Route("{employeeID}")]
-        public ActionResult GetSpesificEmployee(int employeeID)
+        public ActionResult GetEmployeeBYID(int employeeID)
         {
             try
             {
-                var data = this.employeeBusiness.GetSpecificEmployee(employeeID);
+                var data = this.employeeBusiness.GetEmployeeByID(employeeID);
                 if (!data.Equals(null))
                 {
                     bool status = true;
@@ -189,38 +194,8 @@ namespace WebApplication.Controllers
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
-            }
-        }
-
-        /// <summary>
-        /// method for login user 
-        /// </summary>
-        /// <param name="login">login type data</param>
-        /// <returns>status</returns>
-        [HttpPost]
-        [Route("login")]
-        public ActionResult LoginEmployee([FromBody]Login login)
-        {
-            try
-            {
-                var data = this.employeeBusiness.LoginEmployee(login);
-                if (!data.Equals(null))
-                {
-                    bool status = true;
-                    var Message = "Employees login sucessfull";
-                    return this.Ok(new { status, Message, data });
-                }
-                else
-                {
-                    bool status = false;
-                    var Message = "Employees login unsucessfull";
-                    return this.BadRequest(new { status, Message, data = login });
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
+                bool status = false;
+                return this.BadRequest(new { status, message = e.Message });
             }
         }
     }

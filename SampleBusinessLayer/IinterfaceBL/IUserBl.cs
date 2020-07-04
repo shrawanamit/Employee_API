@@ -1,10 +1,12 @@
-﻿using EMSampleCommanLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿///-----------------------------------------------------------------
+///   class:       IUserBl
+///   Description: interface class for user business Layer
+///   Author:      amit                   Date: 30/6/2020
+///-----------------------------------------------------------------
 
 namespace EMBusinessLayer.IinterfaceBL
 {
+    using EMSampleCommanLayer.Models;
     public interface IUserBl
     {
         /// <summary>

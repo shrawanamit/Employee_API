@@ -1,28 +1,41 @@
-﻿using EMSampleCommanLayer.Models;
-using EMSampleRepositoryLayer.interfaceRepository;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Text;
+﻿///-----------------------------------------------------------------
+///   class:       UserRL
+///   Description: Repository Layer class for user and ado .net code connection with data base
+///   Author:      amit                   Date: 30/6/2020
+///-----------------------------------------------------------------
 
 namespace EMSampleRepositoryLayer.serviceRepository
 {
+    using EMSampleCommanLayer.Models;
+    using EMSampleRepositoryLayer.interfaceRepository;
+    using Microsoft.Extensions.Configuration;
+    using System;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.IO;
+
+    /// <summary>
+    /// implimenting interface
+    /// </summary>
     public class UserRL:IUserRL
     {
         /// <summary>
         /// data base connection veriable
         /// </summary>
-        private static readonly string ConnectionVariable = "Data Source=DESKTOP-LSKIBA4;Initial Catalog=EmployeeDB;Integrated Security=True";
+         private SqlConnection sqlConnection;
 
+        public UserRL()
+        {
+            var configuration = this.GetConfiguration();
+            this.sqlConnection = new SqlConnection(configuration.GetSection("Data").GetSection("ConnectionString").Value);
+        }
         /// <summary>
         /// Add employee
         /// </summary>
         /// <param name="employeeModel">employee data</param>
         /// <returns>boolean value </returns>
         public bool AddUser(UserModel userModel)
-        {
-            SqlConnection sqlConnection = new SqlConnection(ConnectionVariable);
+        { 
             try
             {
                 //for store procedure and connection to database
@@ -62,7 +75,6 @@ namespace EMSampleRepositoryLayer.serviceRepository
         /// <returns>status</returns>
         public int UserLogin(UserLogin userLogin)
         {
-            SqlConnection sqlConnection = new SqlConnection(ConnectionVariable);
             try
             {
                 SqlCommand sqlCommand = new SqlCommand("spUserLogin", sqlConnection);
@@ -95,6 +107,16 @@ namespace EMSampleRepositoryLayer.serviceRepository
                 ///closing the connection
                 sqlConnection.Close();
             }
+        }
+
+        /// <summary>
+        /// configuration with database
+        /// </summary>
+        /// <returns>return builder</returns>
+        public IConfigurationRoot GetConfiguration()
+        {
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            return builder.Build();
         }
     }
 }

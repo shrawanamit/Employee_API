@@ -34,6 +34,8 @@ namespace WebApplication
             ////Dependency Injection for Repository layer
             services.AddTransient<IUserRL, UserRL>();
 
+            ///when ever we are going to use IConfiguration we get object of Configaration class
+            services.AddSingleton<IConfiguration>(Configuration);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
