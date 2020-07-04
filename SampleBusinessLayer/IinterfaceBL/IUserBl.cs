@@ -14,13 +14,13 @@ namespace EMBusinessLayer.IinterfaceBL
         /// </summary>
         /// <param name="employeeModel">The employee model.</param>
         /// <returns>returns the added data</returns>
-        bool AddUser(UserModel userModel);
+        UserModel AddUser(UserModel userModel);
 
         /// <summary>
         /// login User
         /// </summary>
         /// <param name="data">login data</param>
         /// <returns>status</returns>
-        int LoginUser(UserLogin userlogin);
+        UserModel LoginUser(UserLogin userLogin);
     }
 }

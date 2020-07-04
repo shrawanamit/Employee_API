@@ -13,13 +13,13 @@ namespace EMSampleRepositoryLayer.interfaceRepository
         /// </summary>
         /// <param name="employeeModel">The employee model.</param>
         /// <returns>returns the added data</returns>
-        bool AddUser(UserModel userModel);
+        UserModel AddUser(UserModel userModel);
 
         /// <summary>
         /// login user
         /// </summary>
         /// <param name="data">login data</param>
         /// <returns>status</returns>
-        int UserLogin(UserLogin data);
+        UserModel UserLogin(UserLogin data);
     }
 }

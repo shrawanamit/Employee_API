@@ -82,5 +82,22 @@ namespace EMSampleCommanLayer.Models
         /// </value>
         [Required]
         public int Salary{ get; set; }
+
+        /// <summary>
+        /// Gets or sets Salary
+        /// </summary>
+        ///  <value>
+        /// salary
+        /// </value>
+        [Required]
+        public string JoiningDate { get; set; }
+        /// <summary>
+        /// Gets or sets Salary
+        /// </summary>
+        ///  <value>
+        /// salary
+        /// </value>
+        [Required]
+        public string ModifiedDate { get; set; }
     }
 }

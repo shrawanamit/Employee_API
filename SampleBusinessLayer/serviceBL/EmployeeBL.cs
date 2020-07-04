@@ -55,29 +55,12 @@ namespace EMBusinessLayer.serviceBL
         /// <param name="employeeModel">The employee model.</param>
         /// <returns>returns the newly added employee</returns>
         /// <exception cref="Exception">throws the exception</exception>
-        public bool AddEmployee(EmployeeModel employeeModel)
+        public EmployeeModel AddEmployee(EmployeeModel employeeModel)
         {
             try
             {
-                ////check employeeModel not null
-                if (employeeModel != null)
-                {
-                    ////this variable stores the response from employee repository of the AddEmployee
-                    var response = this.employeeRL.AddEmployee(employeeModel);
-                    ////check response is true
-                    if (response == true)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
+                ////this variable stores the response from employee repository of the AddEmployee
+                return this.employeeRL.AddEmployee(employeeModel);
             }
             catch (Exception exception)
             {
@@ -91,7 +74,7 @@ namespace EMBusinessLayer.serviceBL
         /// <param name="EmployeeID">id</param>
         /// <param name="employeeModel">employee data</param>
         /// <returns>status</returns>
-        public int UpdateEmployeeByID(int EmployeeID, EmployeeModel employeeModel)
+        public EmployeeModel UpdateEmployeeByID(int EmployeeID, EmployeeModel employeeModel)
         {
             try
             {
@@ -127,20 +110,12 @@ namespace EMBusinessLayer.serviceBL
         /// </summary>
         /// <param name="EmployeeID">id of employee</param>
         /// <returns>employee id</returns>
-        public EmployeeID DeleteEmployeeByID(int employeeID)
+        public EmployeeModel DeleteEmployeeByID(int employeeID)
         {
             try
             {
-                EmployeeID response = null;
-                ////check employeeModel not null
-                if (employeeID != 0)
-                {
-                    ////this variable stores the response from employee repository of the AddEmployee
-                     response = this.employeeRL.DeleteEmployeeByID(employeeID);
-                    ////check response is true
-                    return response;
-                }
-                return response;
+                ////this variable stores the response from employee repository of the AddEmployee
+                return employeeRL.DeleteEmployeeByID(employeeID);
             }
             catch (Exception exception)
             {

@@ -61,6 +61,8 @@ namespace EMSampleRepositoryLayer.serviceRepository
                     employeeModel.Address = sqlDataReader["Address"].ToString();
                     employeeModel.Department = sqlDataReader["Department"].ToString();
                     employeeModel.Salary = Convert.ToInt32(sqlDataReader["Salary"]);
+                    employeeModel.JoiningDate = sqlDataReader["JoiningDate"].ToString();
+                    employeeModel.ModifiedDate = sqlDataReader["ModifiedDate"].ToString();
                     employeeModelsList.Add(employeeModel);
                 }
                 sqlConnection.Close();
@@ -77,10 +79,11 @@ namespace EMSampleRepositoryLayer.serviceRepository
         /// </summary>
         /// <param name="employeeModel">employee data</param>
         /// <returns>boolean value </returns>
-        public bool AddEmployee(EmployeeModel employeeModel)
+        public EmployeeModel AddEmployee(EmployeeModel employeeModel)
         {
             try
             {
+                EmployeeModel employee = new EmployeeModel();
                 //for store procedure and connection to database
                 SqlCommand sqlCommand = new SqlCommand("spEmployeeRegistration", sqlConnection);
                 ////take the command type
@@ -92,17 +95,11 @@ namespace EMSampleRepositoryLayer.serviceRepository
                 sqlCommand.Parameters.AddWithValue("@Address", employeeModel.Address);
                 sqlCommand.Parameters.AddWithValue("@Department", employeeModel.Department);
                 sqlCommand.Parameters.AddWithValue("@Salary", employeeModel.Salary.ToString());
+                sqlCommand.Parameters.AddWithValue("@JoiningDate", DateTime.Now);
+                sqlCommand.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
                 sqlConnection.Open();
-                int Response = sqlCommand.ExecuteNonQuery();
-                sqlConnection.Close();
-                if (Response != 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                SqlDataReader Response = sqlCommand.ExecuteReader();
+                return this.GetEmployeeData(employee, Response);
             }
             catch (Exception e)
             {
@@ -116,10 +113,11 @@ namespace EMSampleRepositoryLayer.serviceRepository
         /// <param name="EmployeeID">id</param>
         /// <param name="employeeModel">employee model</param>
         /// <returns>status</returns>
-        public int UpdateEmployeeByID(int EmployeeID, EmployeeModel employeeModel)
+        public EmployeeModel UpdateEmployeeByID(int EmployeeID, EmployeeModel employeeModel)
         {
             try
             {
+                EmployeeModel employee = new EmployeeModel();
                 SqlCommand sqlCommand = new SqlCommand("spUpdateEmployees", sqlConnection);
                 ////take the command type
                 sqlCommand.CommandType = CommandType.StoredProcedure;
@@ -131,38 +129,29 @@ namespace EMSampleRepositoryLayer.serviceRepository
                 sqlCommand.Parameters.AddWithValue("@Address", employeeModel.Address);
                 sqlCommand.Parameters.AddWithValue("@Department", employeeModel.Department);
                 sqlCommand.Parameters.AddWithValue("@Salary", employeeModel.Salary.ToString());
+                sqlCommand.Parameters.AddWithValue("@JoiningDate", DateTime.Now);
+                sqlCommand.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
                 sqlConnection.Open();
-                int Response = sqlCommand.ExecuteNonQuery();
-                if (Response == 0)
-                {
-                    return 0;
-                }
-                else
-                {
-                    return 1;
-                }
+                SqlDataReader Response = sqlCommand.ExecuteReader();
+                return this.GetEmployeeData(employee, Response);
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            finally
-            {
-                ///closing the connection
-                sqlConnection.Close();
-            }
+            
         }
         /// <summary>
         /// delete employee detail by id
         /// </summary>
         /// <param name="EmployeeID">id of employee</param>
         /// <returns>employee id</returns>
-        public EmployeeID DeleteEmployeeByID(int EmployeeID)
+        public EmployeeModel DeleteEmployeeByID(int EmployeeID)
         { 
             try
             {
                 ///instace of employeeid model
-                EmployeeID employee = new EmployeeID();
+                EmployeeModel employee = new EmployeeModel();
                 ///for store procedure and connection to database
                 SqlCommand sqlCommand = new SqlCommand("spDeleteEmployeesByID", sqlConnection);
                 ///take the command type
@@ -170,15 +159,11 @@ namespace EMSampleRepositoryLayer.serviceRepository
                 sqlCommand.Parameters.Add("@EmployeeId", SqlDbType.Int).Value = EmployeeID;
                 sqlConnection.Open();
                 SqlDataReader Response = sqlCommand.ExecuteReader();
-                return employee;
+                return this.GetEmployeeData(employee, Response);
             }
             catch(Exception e)
             {
                 throw new Exception(e.Message);
-            }
-            finally
-            {
-                sqlConnection.Close();
             }
         }
 
@@ -196,26 +181,50 @@ namespace EMSampleRepositoryLayer.serviceRepository
                 command.Parameters.Add("@EmployeeId", SqlDbType.Int).Value = EmployeeID;
                 sqlConnection.Open();
                 SqlDataReader Response = command.ExecuteReader();
-                while (Response.Read())
-                {
-                    employee.EmployeeId = Convert.ToInt32(Response["EmployeeID"]);
-                    employee.FirstName = Response["FirstName"].ToString();
-                    employee.LastName = Response["LastName"].ToString();
-                    employee.MobNo = Response["MobNo"].ToString();
-                    employee.Email = Response["Email"].ToString();
-                    employee.Address = Response["Department"].ToString();
-                    employee.Department = Response["Department"].ToString();
-                    employee.Salary = Convert.ToInt32(Response["Salary"]);
-                }
-                return employee;
+                return this.GetEmployeeData(employee, Response);
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            finally 
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="employeeModel"></param>
+        /// <param name="sqlDataReader"></param>
+        /// <returns></returns>
+        private EmployeeModel GetEmployeeData(EmployeeModel employeeModel, SqlDataReader sqlDataReader)
+        {
+            try 
             {
-                sqlConnection.Close();
+                if (sqlDataReader.HasRows)
+                {
+                    while (sqlDataReader.Read())
+                    { 
+                        employeeModel.EmployeeId = Convert.ToInt32(sqlDataReader["EmployeeId"]);
+                        employeeModel.FirstName = sqlDataReader["FirstName"].ToString();
+                        employeeModel.LastName = sqlDataReader["LastName"].ToString();
+                        employeeModel.MobNo = sqlDataReader["MobNo"].ToString();
+                        employeeModel.Email = sqlDataReader["Email"].ToString();
+                        employeeModel.Address = sqlDataReader["Address"].ToString();
+                        employeeModel.Department = sqlDataReader["Department"].ToString();
+                        employeeModel.Salary = Convert.ToInt32(sqlDataReader["Salary"]);
+                        employeeModel.JoiningDate = sqlDataReader["JoiningDate"].ToString();
+                        employeeModel.ModifiedDate = sqlDataReader["ModifiedDate"].ToString();
+                    }
+                    return employeeModel;
+                }
+                return null;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.sqlConnection.Close();
             }
         }
 

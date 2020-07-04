@@ -42,19 +42,19 @@ namespace WebApplication.Controllers
         {
             try
             {
-                var data = this.employeeBusiness.GetAllEmployee();
-                if(!data.Equals(null))
+                var response = this.employeeBusiness.GetAllEmployee();
+                if(!response.Equals(null))
                 {
                     bool status = true;
                     string message = "All data of Employees found ";
-                    return this.Ok(new { status, message, data });
+                    return this.Ok(new { status, message, data= response });
                 }
 
                 else 
                 {
                     bool status = false;
                     string message = "All data of Employees not found ";
-                    return this.BadRequest(new { status, message, data });
+                    return this.BadRequest(new { status, message, data="EmptyData" });
                 }
             }
             catch(Exception e)
@@ -78,13 +78,13 @@ namespace WebApplication.Controllers
 
             try
             {
-                 bool data = this.employeeBusiness.AddEmployee(employeeModel);
+                 var response = this.employeeBusiness.AddEmployee(employeeModel);
 
-                if (!data.Equals(null))
+                if (!response.Equals(null))
                 {
                     bool status = true;
                     var Message = "Employees Registration Successfull";
-                    return this.Ok(new { status, Message, data });
+                    return this.Ok(new { status, Message, response });
                 }
                 else                                   
                 {
@@ -112,12 +112,12 @@ namespace WebApplication.Controllers
         {
             try 
             {
-                var data = this.employeeBusiness.UpdateEmployeeByID( EmployeeID,  employeeModel);
-                if (!data.Equals(null))
+                var response = this.employeeBusiness.UpdateEmployeeByID( EmployeeID,  employeeModel);
+                if (!response.Equals(null))
                 {
                     bool status = true;
                     var Message = "Employees data updated by EmployeeID";
-                    return this.Ok(new { status, Message, data });
+                    return this.Ok(new { status, Message, data= response });
                 }
                 else
                 {
@@ -146,12 +146,12 @@ namespace WebApplication.Controllers
         {
             try
             {
-                var data = this.employeeBusiness.DeleteEmployeeByID(employeeId);
-                if (!data.Equals(null))
+                var response = this.employeeBusiness.DeleteEmployeeByID(employeeId);
+                if (!response.Equals(null))
                 {
                     bool status = true;
                     var Message = "Employees data deleted by EmployeeID";
-                    return this.Ok(new { status, Message, data });
+                    return this.Ok(new { status, Message, data= response });
                 }
                 else
                 {
@@ -178,12 +178,12 @@ namespace WebApplication.Controllers
         {
             try
             {
-                var data = this.employeeBusiness.GetEmployeeByID(employeeID);
-                if (!data.Equals(null))
+                var response = this.employeeBusiness.GetEmployeeByID(employeeID);
+                if (!response.Equals(null))
                 {
                     bool status = true;
                     var Message = "Employees specific data by EmployeeID";
-                    return this.Ok(new { status, Message, data });
+                    return this.Ok(new { status, Message, data= response });
                 }
                 else
                 {

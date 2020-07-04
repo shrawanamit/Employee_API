@@ -34,14 +34,16 @@ namespace EMSampleRepositoryLayer.serviceRepository
         /// </summary>
         /// <param name="employeeModel">employee data</param>
         /// <returns>boolean value </returns>
-        public bool AddUser(UserModel userModel)
+        public UserModel AddUser(UserModel userModel)
         { 
             try
             {
+                UserModel userModeData = new UserModel();
                 //for store procedure and connection to database
-                SqlCommand sqlCommand = new SqlCommand("spUserRegistration", sqlConnection);
+                SqlCommand sqlCommand = new SqlCommand("spUserRegistrationData", sqlConnection);
                 ////take the command type
                 sqlCommand.CommandType = CommandType.StoredProcedure;
+
                 sqlCommand.Parameters.AddWithValue("@FirstName", userModel.FirstName);
                 sqlCommand.Parameters.AddWithValue("@LastName", userModel.LastName);
                 sqlCommand.Parameters.AddWithValue("@UserName", userModel.UserName);
@@ -50,17 +52,11 @@ namespace EMSampleRepositoryLayer.serviceRepository
                 sqlCommand.Parameters.AddWithValue("@Password", userModel.Password);
                 sqlCommand.Parameters.AddWithValue("@Address", userModel.Address);
                 sqlCommand.Parameters.AddWithValue("@Department", userModel.Department);
+                sqlCommand.Parameters.AddWithValue("@VisitedDate", DateTime.Now);
+
                 sqlConnection.Open();
-                int Response = sqlCommand.ExecuteNonQuery();
-                sqlConnection.Close();
-                if (Response != 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                SqlDataReader Response = sqlCommand.ExecuteReader();
+                return GetUserData(userModeData, Response);
             }
             catch (Exception e)
             {
@@ -73,40 +69,47 @@ namespace EMSampleRepositoryLayer.serviceRepository
         /// </summary>
         /// <param name="data">data of login type</param>
         /// <returns>status</returns>
-        public int UserLogin(UserLogin userLogin)
+        public UserModel UserLogin(UserLogin userLogin)
         {
             try
             {
+                UserModel userModel = new UserModel();
                 SqlCommand sqlCommand = new SqlCommand("spUserLogin", sqlConnection);
+
                 sqlCommand.CommandType = CommandType.StoredProcedure;
+
                 sqlCommand.Parameters.AddWithValue("@UserName", userLogin.UserName);
                 sqlCommand.Parameters.AddWithValue("@Password", userLogin.Password);
-                sqlConnection.Open();
+
                 SqlDataReader reader = sqlCommand.ExecuteReader();
-                int Status = 0;
-                while (reader.Read())
-                {
-                    ///assign the value in status
-                    Status = reader.GetInt32(0);
-                }
-                if (Status == 1)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return 0;
-                }
+                return GetUserData(userModel, reader);
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            finally
+        }
+
+        private UserModel GetUserData(UserModel userDetails, SqlDataReader response)
+        {
+            if (response.HasRows)
             {
-                ///closing the connection
-                sqlConnection.Close();
+                while (response.Read())
+                {
+                    userDetails.userId = Convert.ToInt32(response["userId"]);
+                    userDetails.FirstName = response["FirstName"].ToString();
+                    userDetails.LastName = response["LastName"].ToString();
+                    userDetails.UserName = response["UserName"].ToString();
+                    userDetails.MobNo = response["MobNo"].ToString();
+                    userDetails.Email = response["Email"].ToString();
+                    userDetails.Address = response["Address"].ToString();
+                    userDetails.Department = response["Department"].ToString();
+                    userDetails.VisitedDate = response["VisitedDate"].ToString();
+                }
+                this.sqlConnection.Close();
+                return userDetails;
             }
+            return null;
         }
 
         /// <summary>

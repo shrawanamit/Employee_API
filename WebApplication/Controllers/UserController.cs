@@ -9,6 +9,7 @@ namespace EmployeeManagement.Controllers
     using EMBusinessLayer.IinterfaceBL;
     using EMSampleCommanLayer.Models;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -18,14 +19,17 @@ namespace EmployeeManagement.Controllers
         /// The employee business
         /// </summary>
         private readonly IUserBl userBL;
+        private IConfiguration config;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeesController"/> class.
         /// </summary>
         /// <param name="employeeBusiness">The employee business.</param>
-        public UserController(IUserBl userBl)
+        public UserController(IUserBl userBl, IConfiguration config)
         {
             this.userBL = userBl;
+            this.config = config;
         }
 
         /// <summary>
@@ -47,13 +51,13 @@ namespace EmployeeManagement.Controllers
                 {
                     bool status = true;
                     var Message = "Employees Registration Successfull";
-                    return this.Ok(new { status, Message, response = UserModel });
+                    return this.Ok(new { status, Message, Data = response });
                 }
                 else
                 {
                     bool status = false;
                     var Message = "Employees Registration Failed";
-                    return this.BadRequest(new { status, Message, response = UserModel });
+                    return this.BadRequest(new { status, Message, Data = UserModel });
                 }
             }
             catch (Exception e)
@@ -80,13 +84,13 @@ namespace EmployeeManagement.Controllers
                 {
                     bool status = true;
                     var Message = "Employees login sucessfull";
-                    return this.Ok(new { status, Message, response= userLogin });
+                    return this.Ok(new { status, Message, Data= response });
                 }
                 else
                 {
                     bool status = false;
-                    var Message = "Employees login unsucessfull";
-                    return this.BadRequest(new { status, Message, response = userLogin });
+                    var Message = "UserName and PassWORD Must be correct";
+                    return this.BadRequest(new { status, Message, Data = userLogin });
                 }
             }
             catch (Exception e)

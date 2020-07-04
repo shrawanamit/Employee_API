@@ -22,22 +22,22 @@ namespace EMSampleRepositoryLayer.interfaceRepository
         /// </summary>
         /// <param name="employeeModel">The employee model.</param>
         /// <returns>returns the added data</returns>
-        bool AddEmployee(EmployeeModel employeeModel);
-        
+        EmployeeModel AddEmployee(EmployeeModel employeeModel);
+
         /// <summary>
         /// update Employee data
         /// </summary>
         /// <param name="EmployeeID">id of emlpoyee</param>
         /// <param name="employeeModel">all data</param>
         /// <returns>id</returns>
-        int UpdateEmployeeByID(int EmployeeID, EmployeeModel employeeModel);
-        
+        EmployeeModel UpdateEmployeeByID(int EmployeeID, EmployeeModel employeeModel);
+
         /// <summary>
         /// deleate employee
         /// </summary>
         /// <param name="EmployeeID">id</param>
         /// <returns>id</returns>
-        EmployeeID DeleteEmployeeByID(int EmployeeID);
+        EmployeeModel DeleteEmployeeByID(int EmployeeID);
 
         /// <summary>
         ///  get specific employee

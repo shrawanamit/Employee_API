@@ -33,29 +33,11 @@ namespace EMBusinessLayer.serviceBL
         /// <param name="employeeModel">The employee model.</param>
         /// <returns>returns the newly added employee</returns>
         /// <exception cref="Exception">throws the exception</exception>
-        public bool AddUser(UserModel userModel)
+        public UserModel AddUser(UserModel userModel)
         {
             try
             {
-                ////check employeeModel not null
-                if (userModel != null)
-                {
-                    ////this variable stores the response from employee repository of the AddEmployee
-                    var response = this.userRL.AddUser(userModel);
-                    ////check response is true
-                    if (response == true)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
+                    return  this.userRL.AddUser(userModel);
             }
             catch (Exception exception)
             {
@@ -68,19 +50,11 @@ namespace EMBusinessLayer.serviceBL
         /// </summary>
         /// <param name="data">data of login type</param>
         /// <returns>status</returns>
-        public int LoginUser(UserLogin userLogin)
+        public UserModel LoginUser(UserLogin userLogin)
         {
             try
             {
-                var response = this.userRL.UserLogin(userLogin);
-                if (!response.Equals(0))
-                {
-                    return 1;
-                }
-                else
-                {
-                    return 0;
-                }
+               return this.userRL.UserLogin(userLogin);
             }
             catch (Exception e)
             {

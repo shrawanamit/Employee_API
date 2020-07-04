@@ -9,6 +9,11 @@ namespace EMSampleCommanLayer.Models
     public class UserModel
     {
         /// <summary>
+        /// 
+        /// </summary>
+        public int userId { get; set; }
+
+        /// <summary>
         /// Gets or sets the name.
         /// </summary>
         /// <value>
@@ -84,5 +89,14 @@ namespace EMSampleCommanLayer.Models
         /// </value>
         [Required(ErrorMessage = " Department required")]
         public string Department { get; set; }
+
+        /// <summary>
+        /// Gets or sets Department
+        /// </summary>
+        /// <value>
+        /// Department
+        /// </value>
+       
+        public string VisitedDate { get; set; }
     }
 }
